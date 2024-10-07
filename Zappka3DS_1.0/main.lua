@@ -140,17 +140,15 @@ function love.load()
 			updatezappsy()
 			zappsy = responded.content.points
 			if updatetime_withserver() < 1727128800 then
-				promki_table = {"Prosto_z_Pieca", "kat_lody", "kat_napoje", "kat_wiekszyglod", "Na_kanapke", "kat_piwo"}
-				promki_nametable = {"Streetfood", "Lody", "Napoje", "Głodny?", "Wszystko na Kanapkę.", "Może Piwko?"}
 				SSF = true
 				print("SSF true")
 			else
-				promki_table = {"Prosto_z_Pieca", "kat_lody", "kat_napoje", "kat_wiekszyglod", "Na_kanapke", "kat_piwo"}
-				promki_nametable = {"Streetfood", "Lody", "Napoje", "Głodny?", "Wszystko na Kanapkę.", "Może Piwko?"}
 				SSF = false
 				print("SSF false")
 			end
-			refresh_data("https://zabka-snrs.zabka.pl/schema-service/v2/documents/specialoffersettings/generate", data, {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")
+			promki_table = {"Prosto_z_Pieca", "kat_lody", "kat_napoje", "kat_wiekszyglod", "Na_kanapke", "kat_piwo"}
+			promki_nametable = {"Streetfood", "Lody", "Napoje", "Głodny?", "Wszystko na Kanapkę.", "Może Piwko?"}
+			refresh_data("https://zabka-snrs.zabka.pl/schema-service/v2/documents/specialoffersettings/generate",data, {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")
 			if responded.content.alcohol_eligibility == "1" then
 				piweczko = true
 			end
@@ -855,13 +853,6 @@ function dawajmito(uuid_value, spowrotem)
 			print("failed act")
 			redeemedstatus = "failed"
 		end
-		image = false
-		jsonread = true
-		refresh_data("https://zabka-snrs.zabka.pl/v4/promotions/promotion/get-item-for-client/uuid/" .. uuid_value, "", {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")
-		updatezappsy()
-		zappsy = responded.content.points
-		timerIncrement = 1
-		showredeemedtime = 0
 	else
 		jsonread = false
         local data = json.encode({key = "uuid", value = uuid_value})
@@ -873,14 +864,14 @@ function dawajmito(uuid_value, spowrotem)
 			print("failed deact")
 			redeemedstatus = "failed"
 		end
-		image = false
-		jsonread = true
-		refresh_data("https://zabka-snrs.zabka.pl/v4/promotions/promotion/get-item-for-client/uuid/" .. uuid_value, "", {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")
-		updatezappsy()
-		zappsy = responded.content.points
-		timerIncrement = 1
-		showredeemedtime = 0
 	end
+	image = false
+	jsonread = true
+	refresh_data("https://zabka-snrs.zabka.pl/v4/promotions/promotion/get-item-for-client/uuid/" .. uuid_value, "", {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")
+	updatezappsy()
+	zappsy = responded.content.points
+	timerIncrement = 1
+	showredeemedtime = 0
 end
 function alt_kalibracja()
 	local lastserverczas = love.filesystem.read("LastCzasInternet.txt")
@@ -904,15 +895,13 @@ function t3x_acja()
 		local data = json.encode({url = topki[promka_sel2 + 2].content.images[1].url})
 		image = true
 		refresh_data("https://api.szprink.xyz/t3x/convert", data, {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json"}, "POST")
-		local imageData = love.image.newImageData(love.filesystem.newFileData(imagebody, "image.t3x"))
-		kuponimage = love.graphics.newImage(imageData)
 	else
 		local data = json.encode({url = responded[promka_sel2].content.images[1].url})
 		image = true
 		refresh_data("https://api.szprink.xyz/t3x/convert", data, {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json"}, "POST")
-		local imageData = love.image.newImageData(love.filesystem.newFileData(imagebody, "image.t3x"))
-		kuponimage = love.graphics.newImage(imageData)
 	end
+	local imageData = love.image.newImageData(love.filesystem.newFileData(imagebody, "image.t3x"))
+	kuponimage = love.graphics.newImage(imageData)
 end
 function png_acja()
 	image = true
