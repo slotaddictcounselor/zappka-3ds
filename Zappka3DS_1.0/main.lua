@@ -70,6 +70,7 @@ if love._potion_version == nil then
 else
 	font = love.graphics.newFont("bold.ttf", 13, "normal", 3.5) -- Font lol
 end
+
 local timerIncrement = 1
 local showredeemedtime = 11
 -- Precompute slice width and vertical position only once
@@ -84,6 +85,7 @@ for i = 0, numSegments - 1 do
     local x = i * sliceWidth
     quads[i + 1] = love.graphics.newQuad(x, 0, sliceWidth, imgHeight, imgWidth, imgHeight)
 end
+
 function loadTableFromFile(filename)
     local chunk = love.filesystem.load(filename)
     if chunk then
@@ -92,6 +94,7 @@ function loadTableFromFile(filename)
         return nil
     end
 end
+
 function love.load()
     -- Get the current time
 	redeemedstatus = "default"
@@ -170,6 +173,7 @@ function love.load()
 	music:setLooping(true)
     music:play()
 end
+
 local function isLeapYear(year)
     return (year % 4 == 0 and year % 100 ~= 0) or (year % 400 == 0)
 end
@@ -203,6 +207,7 @@ local function isoToUnix(isoDate)
 
     return totalSeconds
 end
+
 function createButton(x, y, imagePath, callback, statename, secstatename, thrdstate)
     local image = love.graphics.newImage(imagePath) -- Load the image
     return {
@@ -225,6 +230,7 @@ function createButton(x, y, imagePath, callback, statename, secstatename, thrdst
         end
     }
 end
+
 function serializeTable(tbl, depth)
     depth = depth or 0
     local output = "{\n"
@@ -248,6 +254,7 @@ function saveTableToFile(tbl, filename)
     local serializedData = "return " .. serializeTable(tbl)
     love.filesystem.write(filename, serializedData)
 end
+
 function calculatetotp() --NAPRAWIŁEM KURWA
 	local javaIntMax = 2147483647
 
@@ -295,6 +302,7 @@ function calculatetotp() --NAPRAWIŁEM KURWA
 		qr1 = nil
 	end
 end
+
 function love.draw(screen)
     if screen == "bottom" then
         draw_bottom_screen()
@@ -341,9 +349,6 @@ function refresh_data(url, request, inheaders, metoda)
 		responded = json.decode(body)
 	end
 end
-
-
-
 
 function draw_top_screen(dt)
     if isScrolling == true then
@@ -508,6 +513,7 @@ function draw_top_screen(dt)
 		TextDraw.DrawTextCentered("Falujące logo: " .. optiontable[3], SCREEN_WIDTH/2, 110, {0.27,0.84,0.43, 1}, font, 1.9)
     end
 end
+
 local function extract_p_tags(html)
     local paragraphs = {}
 	if html:gmatch("<p>(.-)</p>") then
@@ -521,6 +527,7 @@ local function extract_p_tags(html)
 	end
     return table.concat(paragraphs, "\n")
 end
+
 function limitchar(str)
 	if str:len() > 167 then
 		return string.sub(str, 1, 167) .. "..."
@@ -528,6 +535,7 @@ function limitchar(str)
 		return str
 	end
 end
+
 function parsedesc(text_to_parse)
 	local str = text_to_parse
 	
@@ -535,6 +543,7 @@ function parsedesc(text_to_parse)
 	
 	return output
 end
+
 function draw_bottom_screen()
     SCREEN_WIDTH = 400
     SCREEN_HEIGHT = 240
@@ -615,12 +624,14 @@ function draw_bottom_screen()
 	local memoryUsage = collectgarbage("count")
     --love.graphics.print(string.format("Memory Usage: %.2f KB", memoryUsage), font, 150, 215, 0, 1.2, 1.2)
 end
+
 function logout()
 	love.filesystem.remove("secret.hex.txt")
 	love.filesystem.remove("token.txt")
 	love.filesystem.remove("id.txt")
 	state = "restartplz"
 end
+
 function exitenmachen()
 	if state == "promki" or state == "bierzlubnie" then
 		sfx2:play()
@@ -629,6 +640,7 @@ function exitenmachen()
 		state = "main_strona"
 	end
 end
+
 function kuponmachen()
 	if state == "promki_sel" then
 		sfx2:play()
@@ -648,6 +660,7 @@ function kuponmachen()
 		elapsedTimeFade = 0
 	end
 end
+
 function optenmachen()
 	if state == "main_strona" or state == "options" then
 		if state == "options" then
@@ -661,6 +674,7 @@ function optenmachen()
 		end
 	end
 end
+
 function barcodenmachen()
 	if state == "barcode" then
 		sfx2:play()
@@ -675,6 +689,7 @@ function barcodenmachen()
 		elapsedTimeFade = 0
 	end
 end
+
 function shiftRight(t)
     local last = t[#t]
     for i = #t, 2, -1 do
@@ -682,6 +697,7 @@ function shiftRight(t)
     end
     t[1] = last
 end
+
 function love.touchpressed(id, x, y, dx, dy, pressure)
     -- Check if any button is pressed
     for _, button in ipairs(buttons) do
@@ -690,6 +706,7 @@ function love.touchpressed(id, x, y, dx, dy, pressure)
         end
     end
 end
+
 function love.gamepadpressed(joystick, button)
     if button == "a" then
 		if state == "login" then
@@ -841,6 +858,7 @@ function love.gamepadpressed(joystick, button)
 		end
 	end
 end
+
 function dawajmito(uuid_value, spowrotem)
 	if spowrotem == false then
 		jsonread = false
@@ -873,6 +891,7 @@ function dawajmito(uuid_value, spowrotem)
 	timerIncrement = 1
 	showredeemedtime = 0
 end
+
 function alt_kalibracja()
 	local lastserverczas = love.filesystem.read("LastCzasInternet.txt")
 	local lastlocalczas = love.filesystem.read("LastCzasIntranet.txt")
@@ -882,6 +901,7 @@ function alt_kalibracja()
 	love.filesystem.write("LastCzasIntranet.txt", os.time())
 	return dawajczas
 end
+
 function updatetime_withserver()
 	local data = ""
 	refresh_data("https://zabka-snrs.zabka.pl/v4/server/time", data, {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")
@@ -890,6 +910,7 @@ function updatetime_withserver()
 	love.filesystem.write("LastCzasIntranet.txt", os.time())
 	return dawajczas
 end
+
 function t3x_acja()
 	if state == "main_strona" then
 		local data = json.encode({url = topki[promka_sel2 + 2].content.images[1].url})
@@ -903,6 +924,7 @@ function t3x_acja()
 	local imageData = love.image.newImageData(love.filesystem.newFileData(imagebody, "image.t3x"))
 	kuponimage = love.graphics.newImage(imageData)
 end
+
 function png_acja()
 	image = true
 	if state == "main_strona" then
@@ -913,16 +935,19 @@ function png_acja()
 	local imageData = love.image.newImageData(love.filesystem.newFileData(imagebody, "image.png"))
 	kuponimage = love.graphics.newImage(imageData)
 end
+
 function updatezappsy()
 	refresh_data("https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=20&type=CUSTOM&status=ASSIGNED%2CACTIVE&tagNames=kat_top&sort=priority%2Cdesc",  data, {["api-version"] = "4.4", ["authorization"] = "Bearer " .. authtoken, ["content-type"] = "application/json", ["accept"] = "application/json", ["user-agent"] = "okhttp/4.12.0"}, "GET")
 	topki = responded
 	local data = ""
 	refresh_data("https://zabka-snrs.zabka.pl/schema-service/v2/documents/points/generate", data, {["Cache-Control"] = "no-cache", ["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")
 end
+
 function updatessf()
 	local data = ""
 	refresh_data("https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=20&tagNames=SSF_kupony&sort=priority%2Cdesc", data, {["api-version"] = "4.4", ["authorization"] = "Bearer " .. authtoken, ["content-type"] = "application/json", ["accept"] = "application/json", ["user-agent"] = "okhttp/4.12.0"}, "GET")
 end
+
 function updatepromki(endlol)
 	local data = ""
 	state = "promki"
@@ -930,6 +955,7 @@ function updatepromki(endlol)
 	refresh_data("https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=20&type=CUSTOM&status=ASSIGNED%2CACTIVE&tagNames=" .. endlol .. "&sort=status%2Casc&sort=priority%2Cdesc", data, {["api-version"] = "4.4", ["authorization"] = "Bearer " .. authtoken, ["content-type"] = "application/json", ["accept"] = "application/json", ["user-agent"] = "okhttp/4.12.0"}, "GET")
 	limit = #responded
 end
+
 function tel_login()
 	if love._potion_version == nil then
 		if gui_design_mode == false then
@@ -958,12 +984,14 @@ function smskod()
 		state = "loading"
 	end
 end
+
 function test()
 	local data = json.encode({idToken = boinaczejjebnie})
     refresh_data("https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q", data, {["Content-Type"] = "application/json", ["X-Android-Package"] = "pl.zabka.apb2c", ["X-Android-Cert"] = "FAB089D9E5B41002F29848FC8034A391EE177077", ["Accept-Language"] = "en-US", ["X-Client-Version"] = "Android/Fallback/X22003001/FirebaseCore-Android", ["X-Firebase-GMPID"] = "1:146100467293:android:0ec9b9022788ad32b7bfb4", ["X-Firebase-Client"] = "H4sIAAAAAAAAAKtWykhNLCpJSk0sKVayio7VUSpLLSrOzM9TslIyUqoFAFyivEQfAAAA", ["Content-Length"] = "894", ["User-Agent"] = "Dalvik/2.1.0 (Linux; U; Android 9; SM-A600FN Build/PPR1.180610.011)", ["Host"] = "www.googleapis.com", ["Connection"] = "Keep-Alive"}, "POST")
 	--love.filesystem.write("tokendata.txt", data)
 	--love.filesystem.write("tokendebug.txt", body)
 end
+
 function handle_authflow()
 	local data = json.encode({clientType = "CLIENT_TYPE_ANDROID"})
     refresh_data("https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q", data, {["content-type"] = "application/json"}, "POST")
@@ -971,12 +999,14 @@ function handle_authflow()
 	--love.filesystem.write("tokendata.txt", data)
 	--love.filesystem.write("tokendebug.txt", body)
 end
+
 function sendvercode(nrtel)
 	local data = json.encode({operationName = "SendVerificationCode", query = "mutation SendVerificationCode($input: SendVerificationCodeInput!) { sendVerificationCode(input: $input) { retryAfterSeconds } }",variables = {input = {phoneNumber = {countryCode = "48", nationalNumber = nrtel}}}})
 	refresh_data("https://super-account.spapp.zabka.pl/", data, {["content-type"] = "application/json", ["authorization"] = responded.idToken}, "POST")
 	--love.filesystem.write("data.txt", data)
 	--love.filesystem.write("debug.txt", body)
 end
+
 function sendbackvercode(smscode)  --niby wyslij tylko kod sms, ale przy okazji weź mi cały auth flow zrób lmao
 	if gui_design_mode == false then
 		local data = json.encode({operationName = "SignInWithPhone",variables = {input = {phoneNumber = {countryCode = "48", nationalNumber = numertel},verificationCode = smscode}}, query = "mutation SignInWithPhone($input: SignInInput!) { signIn(input: $input) { customToken } }"})
@@ -1010,6 +1040,7 @@ function sendbackvercode(smscode)  --niby wyslij tylko kod sms, ale przy okazji 
 	end
 	state = "restartplz"
 end
+
 function changecode()
     changes = "bar"
 	love.keyboard.setTextInput(true, {hint = "Write your name here."})
@@ -1038,6 +1069,7 @@ function love.textinput(text)
 		sendbackvercode(text)
 	end
 end
+
 function love.update(dt)
 	if showredeemedtime <= 10 then
         showredeemedtime = showredeemedtime + (timerIncrement * dt)
