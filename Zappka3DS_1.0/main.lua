@@ -151,31 +151,11 @@ function love.load()
 			end
 			promki_table = {"Prosto_z_Pieca", "kat_lody", "kat_napoje", "kat_wiekszyglod", "Na_kanapke", "kat_piwo"}
 			promki_nametable = {"Streetfood", "Lody", "Napoje", "Głodny?", "Wszystko na Kanapkę.", "Może Piwko?"}
-			refresh_data(
-				"https://zabka-snrs.zabka.pl/schema-service/v2/documents/specialoffersettings/generate",
-				data,
-				{
-					["api-version"] = "4.4",
-					["application-id"] = "%C5%BCappka",
-					["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c",
-					["accept"] = "application/json", 
-					["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
-					["content-type"] = "application/json; charset=UTF-8", 
-					["authorization"] = authtoken
-				}, "GET")
+			refresh_data("https://zabka-snrs.zabka.pl/schema-service/v2/documents/specialoffersettings/generate",data, {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")
 			if responded.content.alcohol_eligibility == "1" then
 				piweczko = true
 			end
-			refresh_data(
-				"https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=20&type=CUSTOM&status=ASSIGNED%2CACTIVE&tagNames=kat_top&sort=priority%2Cdesc",
-				data,
-				{
-					["api-version"] = "4.4", 
-					["authorization"] = "Bearer " .. authtoken, 
-					["content-type"] = "application/json", 
-					["accept"] = "application/json", 
-					["user-agent"] = "okhttp/4.12.0"
-				}, "GET")
+			refresh_data("https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=20&type=CUSTOM&status=ASSIGNED%2CACTIVE&tagNames=kat_top&sort=priority%2Cdesc",  data, {["api-version"] = "4.4", ["authorization"] = "Bearer " .. authtoken, ["content-type"] = "application/json", ["accept"] = "application/json", ["user-agent"] = "okhttp/4.12.0"}, "GET")
 			topki = responded
 	    end
 		state = "main_strona"
@@ -883,18 +863,7 @@ function dawajmito(uuid_value, spowrotem)
 	if spowrotem == false then
 		jsonread = false
 		local data = json.encode({key = "uuid", value = uuid_value})
-		refresh_data(
-			"https://zabka-snrs.zabka.pl/v4/promotions/promotion/batch-activate", 
-			"[" .. data .. "]", 
-			{
-				["api-version"] = "4.4", 
-				["application-id"] = "%C5%BCappka", 
-				["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", 
-				["accept"] = "application/json", 
-				["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
-				["content-type"] = "application/json; charset=UTF-8", 
-				["authorization"] = authtoken
-			}, "POST")
+		refresh_data("https://zabka-snrs.zabka.pl/v4/promotions/promotion/batch-activate", "[" .. data .. "]", {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "POST")
 		if code == 200 then
 			print("success act")
 			redeemedstatus = "success"
@@ -905,18 +874,7 @@ function dawajmito(uuid_value, spowrotem)
 	else
 		jsonread = false
         local data = json.encode({key = "uuid", value = uuid_value})
-		refresh_data(
-			"https://zabka-snrs.zabka.pl/v4/promotions/promotion/batch-deactivate", 
-			"[" .. data .. "]", 
-			{
-				["api-version"] = "4.4", 
-				["application-id"] = "%C5%BCappka", 
-				["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", 
-				["accept"] = "application/json", 
-				["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
-				["content-type"] = "application/json; charset=UTF-8", 
-				["authorization"] = authtoken
-			}, "POST")	
+		refresh_data("https://zabka-snrs.zabka.pl/v4/promotions/promotion/batch-deactivate", "[" .. data .. "]", {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "POST")	
 		if code == 200 then
 			print("success deact")
 			redeemedstatus = "success"
@@ -927,18 +885,7 @@ function dawajmito(uuid_value, spowrotem)
 	end
 	image = false
 	jsonread = true
-	refresh_data(
-		"https://zabka-snrs.zabka.pl/v4/promotions/promotion/get-item-for-client/uuid/" .. uuid_value, 
-		"", 
-		{
-			["api-version"] = "4.4", 
-			["application-id"] = "%C5%BCappka", 
-			["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", 
-			["accept"] = "application/json", 
-			["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
-			["content-type"] = "application/json; charset=UTF-8", 
-			["authorization"] = authtoken
-		}, "GET")
+	refresh_data("https://zabka-snrs.zabka.pl/v4/promotions/promotion/get-item-for-client/uuid/" .. uuid_value, "", {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")
 	updatezappsy()
 	zappsy = responded.content.points
 	timerIncrement = 1
@@ -957,18 +904,7 @@ end
 
 function updatetime_withserver()
 	local data = ""
-	refresh_data(
-		"https://zabka-snrs.zabka.pl/v4/server/time", 
-		data, 
-		{
-			["api-version"] = "4.4", 
-			["application-id"] = "%C5%BCappka", 
-			["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", 
-			["accept"] = "application/json", 
-			["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
-			["content-type"] = "application/json; charset=UTF-8", 
-			["authorization"] = authtoken
-		}, "GET")
+	refresh_data("https://zabka-snrs.zabka.pl/v4/server/time", data, {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")
 	local dawajczas = isoToUnix(responded.serverTime) 
 	love.filesystem.write("LastCzasInternet.txt", dawajczas)
 	love.filesystem.write("LastCzasIntranet.txt", os.time())
@@ -979,31 +915,11 @@ function t3x_acja()
 	if state == "main_strona" then
 		local data = json.encode({url = topki[promka_sel2 + 2].content.images[1].url})
 		image = true
-		refresh_data(
-			"https://api.szprink.xyz/t3x/convert", 
-			data, 
-			{
-				["api-version"] = "4.4", 
-				["application-id"] = "%C5%BCappka", 
-				["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", 
-				["accept"] = "application/json", 
-				["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
-				["content-type"] = "application/json"
-			}, "POST")
+		refresh_data("https://api.szprink.xyz/t3x/convert", data, {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json"}, "POST")
 	else
 		local data = json.encode({url = responded[promka_sel2].content.images[1].url})
 		image = true
-		refresh_data(
-			"https://api.szprink.xyz/t3x/convert",
-			data, 
-			{
-				["api-version"] = "4.4", 
-				["application-id"] = "%C5%BCappka", 
-				["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", 
-				["accept"] = "application/json", 
-				["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
-				["content-type"] = "application/json"
-			}, "POST")
+		refresh_data("https://api.szprink.xyz/t3x/convert", data, {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json"}, "POST")
 	end
 	local imageData = love.image.newImageData(love.filesystem.newFileData(imagebody, "image.t3x"))
 	kuponimage = love.graphics.newImage(imageData)
@@ -1021,61 +937,22 @@ function png_acja()
 end
 
 function updatezappsy()
-	refresh_data(
-		"https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=20&type=CUSTOM&status=ASSIGNED%2CACTIVE&tagNames=kat_top&sort=priority%2Cdesc",
-		data, 
-		{
-			["api-version"] = "4.4", 
-			["authorization"] = "Bearer " .. authtoken, 
-			["content-type"] = "application/json", 
-			["accept"] = "application/json", 
-			["user-agent"] = "okhttp/4.12.0"
-		}, "GET")
+	refresh_data("https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=20&type=CUSTOM&status=ASSIGNED%2CACTIVE&tagNames=kat_top&sort=priority%2Cdesc",  data, {["api-version"] = "4.4", ["authorization"] = "Bearer " .. authtoken, ["content-type"] = "application/json", ["accept"] = "application/json", ["user-agent"] = "okhttp/4.12.0"}, "GET")
 	topki = responded
 	local data = ""
-	refresh_data(
-		"https://zabka-snrs.zabka.pl/schema-service/v2/documents/points/generate", 
-		data, 
-		{
-			["Cache-Control"] = "no-cache", 
-			["api-version"] = "4.4", 
-			["application-id"] = "%C5%BCappka", 
-			["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", 
-			["accept"] = "application/json", 
-			["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
-			["content-type"] = "application/json; charset=UTF-8", 
-			["authorization"] = authtoken
-		}, "GET")
+	refresh_data("https://zabka-snrs.zabka.pl/schema-service/v2/documents/points/generate", data, {["Cache-Control"] = "no-cache", ["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")
 end
 
 function updatessf()
 	local data = ""
-	refresh_data(
-		"https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=20&tagNames=SSF_kupony&sort=priority%2Cdesc", 
-		data, 
-		{
-			["api-version"] = "4.4", 
-			["authorization"] = "Bearer " .. authtoken, 
-			["content-type"] = "application/json", 
-			["accept"] = "application/json", 
-			["user-agent"] = "okhttp/4.12.0"
-		}, "GET")
+	refresh_data("https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=20&tagNames=SSF_kupony&sort=priority%2Cdesc", data, {["api-version"] = "4.4", ["authorization"] = "Bearer " .. authtoken, ["content-type"] = "application/json", ["accept"] = "application/json", ["user-agent"] = "okhttp/4.12.0"}, "GET")
 end
 
 function updatepromki(endlol)
 	local data = ""
 	state = "promki"
 	print(endlol)
-	refresh_data(
-		"https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=20&type=CUSTOM&status=ASSIGNED%2CACTIVE&tagNames=" .. endlol .. "&sort=status%2Casc&sort=priority%2Cdesc", 
-		data, 
-		{
-			["api-version"] = "4.4", 
-			["authorization"] = "Bearer " .. authtoken, 
-			["content-type"] = "application/json", 
-			["accept"] = "application/json", 
-			["user-agent"] = "okhttp/4.12.0"
-		}, "GET")
+	refresh_data("https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=20&type=CUSTOM&status=ASSIGNED%2CACTIVE&tagNames=" .. endlol .. "&sort=status%2Casc&sort=priority%2Cdesc", data, {["api-version"] = "4.4", ["authorization"] = "Bearer " .. authtoken, ["content-type"] = "application/json", ["accept"] = "application/json", ["user-agent"] = "okhttp/4.12.0"}, "GET")
 	limit = #responded
 end
 
@@ -1110,169 +987,51 @@ end
 
 function test()
 	local data = json.encode({idToken = boinaczejjebnie})
-    refresh_data(
-		"https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q", 
-		data, 
-		{
-			["Content-Type"] = "application/json", 
-			["X-Android-Package"] = "pl.zabka.apb2c", 
-			["X-Android-Cert"] = "FAB089D9E5B41002F29848FC8034A391EE177077", 
-			["Accept-Language"] = "en-US", 
-			["X-Client-Version"] = "Android/Fallback/X22003001/FirebaseCore-Android", 
-			["X-Firebase-GMPID"] = "1:146100467293:android:0ec9b9022788ad32b7bfb4", 
-			["X-Firebase-Client"] = "H4sIAAAAAAAAAKtWykhNLCpJSk0sKVayio7VUSpLLSrOzM9TslIyUqoFAFyivEQfAAAA", 
-			["Content-Length"] = "894", 
-			["User-Agent"] = "Dalvik/2.1.0 (Linux; U; Android 9; SM-A600FN Build/PPR1.180610.011)", 
-			["Host"] = "www.googleapis.com", 
-			["Connection"] = "Keep-Alive"
-		}, "POST")
+    refresh_data("https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q", data, {["Content-Type"] = "application/json", ["X-Android-Package"] = "pl.zabka.apb2c", ["X-Android-Cert"] = "FAB089D9E5B41002F29848FC8034A391EE177077", ["Accept-Language"] = "en-US", ["X-Client-Version"] = "Android/Fallback/X22003001/FirebaseCore-Android", ["X-Firebase-GMPID"] = "1:146100467293:android:0ec9b9022788ad32b7bfb4", ["X-Firebase-Client"] = "H4sIAAAAAAAAAKtWykhNLCpJSk0sKVayio7VUSpLLSrOzM9TslIyUqoFAFyivEQfAAAA", ["Content-Length"] = "894", ["User-Agent"] = "Dalvik/2.1.0 (Linux; U; Android 9; SM-A600FN Build/PPR1.180610.011)", ["Host"] = "www.googleapis.com", ["Connection"] = "Keep-Alive"}, "POST")
 	--love.filesystem.write("tokendata.txt", data)
 	--love.filesystem.write("tokendebug.txt", body)
 end
 
 function handle_authflow()
 	local data = json.encode({clientType = "CLIENT_TYPE_ANDROID"})
-    refresh_data(
-		"https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q", 
-		data, 
-		{
-			["content-type"] = "application/json"
-		}, "POST")
+    refresh_data("https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q", data, {["content-type"] = "application/json"}, "POST")
 	boinaczejjebnie = responded.idToken
 	--love.filesystem.write("tokendata.txt", data)
 	--love.filesystem.write("tokendebug.txt", body)
 end
 
 function sendvercode(nrtel)
-	local data = json.encode(
-		{
-			operationName = "SendVerificationCode", 
-			query = "mutation SendVerificationCode($input: SendVerificationCodeInput!) { sendVerificationCode(input: $input) { retryAfterSeconds } }",
-			variables = {
-				input = {
-					phoneNumber = {
-						countryCode = "48", 
-						nationalNumber = nrtel
-					}
-				}
-			}
-		}
-	)
-	refresh_data(
-		"https://super-account.spapp.zabka.pl/", 
-		data, 
-		{
-			["content-type"] = "application/json", 
-			["authorization"] = responded.idToken
-		}, "POST")
+	local data = json.encode({operationName = "SendVerificationCode", query = "mutation SendVerificationCode($input: SendVerificationCodeInput!) { sendVerificationCode(input: $input) { retryAfterSeconds } }",variables = {input = {phoneNumber = {countryCode = "48", nationalNumber = nrtel}}}})
+	refresh_data("https://super-account.spapp.zabka.pl/", data, {["content-type"] = "application/json", ["authorization"] = responded.idToken}, "POST")
 	--love.filesystem.write("data.txt", data)
 	--love.filesystem.write("debug.txt", body)
 end
 
 function sendbackvercode(smscode)  --niby wyslij tylko kod sms, ale przy okazji weź mi cały auth flow zrób lmao
 	if gui_design_mode == false then
-		local data = json.encode(
-			{
-				operationName = "SignInWithPhone",
-				variables = {
-					input = {
-						phoneNumber = {
-							countryCode = "48", 
-							nationalNumber = numertel
-						},
-						verificationCode = smscode
-					}
-				}, 
-				query = "mutation SignInWithPhone($input: SignInInput!) { signIn(input: $input) { customToken } }"
-			}
-		)
-		refresh_data(
-			"https://super-account.spapp.zabka.pl/", 
-			data, 
-			{
-				["content-type"] = "application/json", 
-				["authorization"] = "Bearer " .. boinaczejjebnie, 
-				["user-agent"] = "okhttp/4.12.0", 
-				["x-apollo-operation-id"] = "a531998ec966db0951239efb91519560346cfecac77459fe3b85c5b786fa41de",
-				["x-apollo-operation-name"] = "SignInWithPhone", 
-				["accept"] = "multipart/mixed; deferSpec=20220824, application/json", 
-				["content-length"] = "250"
-			}, "POST")
+		local data = json.encode({operationName = "SignInWithPhone",variables = {input = {phoneNumber = {countryCode = "48", nationalNumber = numertel},verificationCode = smscode}}, query = "mutation SignInWithPhone($input: SignInInput!) { signIn(input: $input) { customToken } }"})
+		refresh_data("https://super-account.spapp.zabka.pl/", data, {["content-type"] = "application/json", ["authorization"] = "Bearer " .. boinaczejjebnie, ["user-agent"] = "okhttp/4.12.0", ["x-apollo-operation-id"] = "a531998ec966db0951239efb91519560346cfecac77459fe3b85c5b786fa41de"	,["x-apollo-operation-name"] = "SignInWithPhone", ["accept"] = "multipart/mixed; deferSpec=20220824, application/json", ["content-length"] = "250"}, "POST")
 		--love.filesystem.write("data.txt", data)
 		--love.filesystem.write("debug.txt", body)
 		local tokentemp = responded.data.signIn.customToken
-		local data = json.encode(
-			{
-				token = tokentemp, 
-				returnSecureToken = "true"
-			}
-		)
-		refresh_data(
-			"https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q", 
-			data, 
-			{
-				["content-type"] = "application/json"
-			}, "POST")
+		local data = json.encode({token = tokentemp, returnSecureToken = "true"})
+		refresh_data("https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q", data, {["content-type"] = "application/json"}, "POST")
 		local tokentemp = responded.idToken
 		local data = json.encode({idToken = tokentemp})
-		refresh_data(
-			"https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q", 
-			data, 
-			{
-				["content-type"] = "application/json"
-			}, "POST")
+		refresh_data("https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q", data, {["content-type"] = "application/json"}, "POST")
 		loadingtext = "Logowanie 45%..."
 		uuidgen.seed()
-		local data = json.encode(
-			{
-				identityProviderToken = tokentemp, 
-				identityProvider = "OAUTH", 
-				apiKey = "b646c65e-a43d-4a61-9294-6c7c4385c762", 
-				uuid = uuidgen(), 
-				deviceId = "0432b18513e325a5"
-			}
-		)
-		refresh_data(
-			"https://zabka-snrs.zabka.pl/sauth/v3/auth/login/client/conditional", 
-			data, 
-			{
-				["api-version"] = "4.4", 
-				["application-id"] = "%C5%BCappka", 
-				["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", 
-				["accept"] = "application/json", 
-				["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
-				["content-type"] = "application/json; charset=UTF-8"
-			}, "POST")
+		local data = json.encode({identityProviderToken = tokentemp, identityProvider = "OAUTH", apiKey = "b646c65e-a43d-4a61-9294-6c7c4385c762", uuid = uuidgen(), deviceId = "0432b18513e325a5"})
+		refresh_data("https://zabka-snrs.zabka.pl/sauth/v3/auth/login/client/conditional", data, {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8"}, "POST")
 		loadingtext = "Logowanie 65%..."
 		authtoken = responded.token
 		local data = ""
-		refresh_data(
-			"https://qr-bff.spapp.zabka.pl/qr-code/secret", 
-			data, 
-			{
-				["authorization"] = "Bearer " .. tokentemp, 
-				["content-type"] = "application/json", 
-				["accept"] = "application/json", 
-				["app"] = "zappka-mobile", 
-				["user-agent"] = "okhttp/4.12.0", 
-				["content-length"] = "0"
-			}, "GET")
+		refresh_data("https://qr-bff.spapp.zabka.pl/qr-code/secret", data, {["authorization"] = "Bearer " .. tokentemp, ["content-type"] = "application/json", ["accept"] = "application/json", ["app"] = "zappka-mobile", ["user-agent"] = "okhttp/4.12.0", ["content-length"] = "0"}, "GET")
 		id = responded.userId
 		love.filesystem.write("secret.hex.txt", responded.secrets.loyal)
 		love.filesystem.write("id.txt", id)
 		love.filesystem.write("token.txt", authtoken)
-		refresh_data(
-			"https://zabka-snrs.zabka.pl/v4/my-account/personal-information", 
-			data, 
-			{
-				["api-version"] = "4.4", 
-				["application-id"] = "%C5%BCappka", 
-				["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", 
-				["accept"] = "application/json", 
-				["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
-				["content-type"] = "application/json; charset=UTF-8", 
-				["authorization"] = authtoken
-			}, "GET")	
+		refresh_data("https://zabka-snrs.zabka.pl/v4/my-account/personal-information", data, {["api-version"] = "4.4", ["application-id"] = "%C5%BCappka", ["user-agent"] = "Synerise Android SDK 5.9.0 pl.zabka.apb2c", ["accept"] = "application/json", ["mobile-info"] = "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", ["content-type"] = "application/json; charset=UTF-8", ["authorization"] = authtoken}, "GET")	
 		name = responded.firstName
 		love.filesystem.write("imie.txt", responded.firstName)
 		updatezappsy()
